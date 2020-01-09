@@ -5,9 +5,11 @@ import Main from './views/Main.vue'
 import Table from './views/nav1/Table.vue'
 import Form from './views/nav1/Form.vue'
 import user from './views/nav1/user.vue'
-import Page4 from './views/nav2/Page4.vue'
+import workplace from './views/nav2/workplace.vue'
 import Page5 from './views/nav2/Page5.vue'
-import Page6 from './views/nav3/Page6.vue'
+import TreeList from './views/nav3/TreeList.vue'
+import EditTable from './views/nav3/EditTable.vue'
+
 import echarts from './views/charts/echarts.vue'
 
 let routes = [
@@ -42,18 +44,19 @@ let routes = [
         name: '导航二',
         iconCls: 'fa fa-id-card-o',
         children: [
-            { path: '/page4', component: Page4, name: '页面4' },
+            { path: '/workplace', component: workplace, name: '工作台' },
             { path: '/page5', component: Page5, name: '页面5' }
         ]
     },
     {
         path: '/',
         component: Home,
-        name: '',
+        name: '导航三',
         iconCls: 'fa fa-address-card',
-        leaf: true,//只有一个节点
+        leaf: false,//只有一个节点
         children: [
-            { path: '/page6', component: Page6, name: '导航三' }
+            { path: '/TreeList', component: TreeList, name: '树目录表格' },
+            { path: '/EditTable', component: EditTable, name: '内联编辑表格' }
         ]
     },
     {
