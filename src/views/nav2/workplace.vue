@@ -1,4 +1,4 @@
-<template>
+<!--<template>
   <page-view :avatar="sysUserAvatar" :title="false">
     <div slot="headerContent">
       <div class="title"><span class="el-dropdown-link userinfo-inner">{{sysUserName}}</span></div>
@@ -18,7 +18,19 @@
       </a-row>
     </div>
   </page-view>
-  
+</template>
+-->
+<template>
+  <div id="components-layout-demo-basic">
+    <a-layout>
+      <a-layout-sider>Sider</a-layout-sider>
+      <a-layout>
+        <a-layout-header>Header</a-layout-header>
+        <a-layout-content>Content</a-layout-content>
+        <a-layout-footer>Footer</a-layout-footer>
+      </a-layout>
+    </a-layout>
+  </div>
 </template>
 
 
@@ -65,15 +77,33 @@
 		}
   }
 </script>
-<style scoped>
-/* .title img{
-    border-radius: 50%;
-    float: left;
-}
-.title span{
-    display: inline-block;
-    margin: 5% 2%;
-    font-size: 22px;
-    float: left;
-} */
+<style>
+  #components-layout-demo-basic {
+    text-align: center;
+  }
+  #components-layout-demo-basic .ant-layout-header,
+  #components-layout-demo-basic .ant-layout-footer {
+    background: #7dbcea;
+    color: #fff;
+  }
+  #components-layout-demo-basic .ant-layout-footer {
+    line-height: 1.5;
+  }
+  #components-layout-demo-basic .ant-layout-sider {
+    background: #3ba0e9;
+    color: #fff;
+    line-height: 120px;
+  }
+  #components-layout-demo-basic .ant-layout-content {
+    background: rgba(16, 142, 233, 1);
+    color: #fff;
+    min-height: 120px;
+    line-height: 120px;
+  }
+  #components-layout-demo-basic > .ant-layout {
+    margin-bottom: 48px;
+  }
+  #components-layout-demo-basic > .ant-layout:last-child {
+    margin: 0;
+  }
 </style>>
