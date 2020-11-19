@@ -72,6 +72,6 @@
 
 </script>
 
-<style scoped>
+<style slot-scope>
 
 </style>

@@ -1,4 +1,4 @@
-<!--<template>
+<template>
   <page-view :avatar="sysUserAvatar" :title="false">
     <div slot="headerContent">
       <div class="title"><span class="el-dropdown-link userinfo-inner">{{sysUserName}}</span></div>
@@ -19,7 +19,7 @@
     </div>
   </page-view>
 </template>
--->
+<!--
 <template>
   <div id="components-layout-demo-basic">
     <a-layout>
@@ -32,7 +32,7 @@
     </a-layout>
   </div>
 </template>
-
+-->
 
 
 <script>
