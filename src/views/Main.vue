@@ -1,10 +1,6 @@
 <template>
-	<template v-if='show'>
-		<card></card>
-	</template>
-	<template v-else>
-		<linear-table />
-	</template>
+		<card v-if='show'></card>
+		<linear-table v-else />
 	
 	
 </template>
