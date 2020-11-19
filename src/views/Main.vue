@@ -1,11 +1,18 @@
 <template>
-	<section>
-		main
-	</section>
+	<card></card>
 </template>
 
 <script>
+import Card from '../components/Card'
 	export default {
+  		components: { 
+			  Card 
+			  },
+		data(){
+			return{
+
+			}
+		}	  
 	}
 
 </script>

@@ -25,38 +25,44 @@ let routes = [
         name: '',
         hidden: true
     },
-    //{ path: '/main', component: Main },
+    { 
+        path: '/', 
+        component: Home, 
+        name:'首页' ,
+        children:[
+            { path: '/main', component: Main, name: '首页'},
+        ]
+    },
     {
         path: '/',
         component: Home,
-        name: '导航一',
+        name: '系统管理',
         iconCls: 'el-icon-message',//图标样式class
         children: [
-            { path: '/main', component: Main, name: '主页', hidden: true },
-            { path: '/table', component: Table, name: 'Table' },
-            { path: '/form', component: Form, name: 'Form' },
-            { path: '/user', component: user, name: '列表' },
+            { path: '/table', component: Table, name: '用户管理' },
+            { path: '/form', component: Form, name: '角色管理' },
+            { path: '/user', component: user, name: '菜单管理' },
         ]
     },
     {
         path: '/',
         component: Home,
-        name: '导航二',
+        name: '组件管理',
         iconCls: 'fa fa-id-card-o',
         children: [
-            { path: '/workplace', component: workplace, name: '工作台' },
-            { path: '/page5', component: Page5, name: '页面5' }
+            { path: '/workplace', component: workplace, name: '图表库' },
+            { path: '/page5', component: Page5, name: '富文本' }
         ]
     },
     {
         path: '/',
         component: Home,
-        name: '导航三',
+        name: '多级菜单',
         iconCls: 'fa fa-address-card',
         leaf: false,//只有一个节点
         children: [
-            { path: '/TreeList', component: TreeList, name: '树目录表格' },
-            { path: '/EditTable', component: EditTable, name: '内联编辑表格' }
+            { path: '/TreeList', component: TreeList, name: '二级菜单1' },
+            { path: '/EditTable', component: EditTable, name: '三级菜单1' }
         ]
     },
     {

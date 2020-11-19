@@ -1,5 +1,7 @@
 import babelpolyfill from 'babel-polyfill'
 import Vue from 'vue'
+import Antd from 'ant-design-vue';
+import 'ant-design-vue/dist/antd.css';
 import App from './App'
 import ElementUI from 'element-ui'
 import VueAvatar from 'vue-avatar'
@@ -18,6 +20,7 @@ import 'font-awesome/css/font-awesome.min.css'
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)
+Vue.use(Antd);
 Vue.use(VueAvatar)
 //NProgress.configure({ showSpinner: false });
 
