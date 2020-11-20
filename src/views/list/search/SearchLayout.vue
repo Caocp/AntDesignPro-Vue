@@ -30,6 +30,7 @@ const getActiveKey = (path) => {
       return '1'
   }
 }
+
 export default {
   name: 'SearchLayout',
   data () {
