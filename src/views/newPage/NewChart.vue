@@ -112,7 +112,7 @@
 
 <script>
 import moment from 'moment'
-import {MiniArea, MiniSmoothArea} from '@/components'
+import {MiniArea, MiniSmoothArea, NumberInfo} from '@/components'
     const searchUserData = []
     for (let i = 0; i < 7; i++) {
     searchUserData.push({
@@ -193,7 +193,8 @@ const pieData = dv.rows
 export default {
   components:{
     MiniArea,
-    MiniSmoothArea
+    MiniSmoothArea,
+    NumberInfo
   },
     data () {
         return {
@@ -202,7 +203,8 @@ export default {
             searchData,
             searchTableColumns,
             pieData,
-            pieScale
+            pieScale,
+            
         }
     }
 }

@@ -30,13 +30,6 @@ export const asyncRouterMap = [
             component: () => import('@/views/dashboard/Analysis'),
             meta: { title: '数据分析', keepAlive: false, permission: [ 'dashboard' ] }
           },
-          // 外部链接
-          {
-            path: '/dashboard/Chart',
-            name: 'Chart',
-            component: () => import('@/views/dashboard/Chart'),
-            meta: { title: '数据监控', keepAlive: true, permission: [ 'dashboard' ] }
-          },
           {
             path: '/dashboard/workplace',
             name: 'Workplace',
@@ -153,6 +146,24 @@ export const asyncRouterMap = [
           }
         ]
       },
+//newPage
+      {
+        path: '/newPage',
+        name: 'newPage',
+        component: RouteView,
+        redirect: '/newPage/NewChart',
+        meta: { title: '新页面', icon: 'check-circle-o', permission: [ 'profile' ] },
+        children: [
+          {
+            path: '/newPage/NewChart',
+            name: 'NewChart',
+            component: () => import('@/views/newPage/NewChart'),
+            meta: { title: '新图表页', keepAlive: true, hiddenHeaderContent: false, permission: [ 'profile' ] }
+          },
+          
+        ]
+      },
+
 
       // result
       {

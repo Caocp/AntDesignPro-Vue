@@ -396,16 +396,6 @@ const userNav = (options) => {
       'component': 'Workplace'
     },
     {
-      'name': 'Chart',
-      'path': '/dashboard/Chart',
-      'parentId': 1,
-      'id': 3,
-      'meta': {
-        'title': '监控页（外部）',
-        'show': true
-      }
-    },
-    {
       'name': 'Analysis',
       'parentId': 1,
       'id': 2,
