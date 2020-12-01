@@ -396,13 +396,12 @@ const userNav = (options) => {
       'component': 'Workplace'
     },
     {
-      'name': 'monitor',
-      'path': 'https://www.baidu.com/',
+      'name': 'Chart',
+      'path': '/dashboard/Chart',
       'parentId': 1,
       'id': 3,
       'meta': {
         'title': '监控页（外部）',
-        'target': '_blank',
         'show': true
       }
     },
