@@ -15,6 +15,7 @@ const constantRouterComponents = {
   '500': () => import(/* webpackChunkName: "error" */ '@/views/exception/500'),
 
   // 你需要动态引入的页面组件
+  'NewTable': () => import('@/views/newPage/NewTable'),
   'NewChart': () => import('@/views/newPage/NewChart'),
   'Workplace': () => import('@/views/dashboard/Workplace'),
   'Analysis': () => import('@/views/dashboard/Analysis'),
