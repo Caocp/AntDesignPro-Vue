@@ -1,5 +1,16 @@
 <template>
-    <a-table :columns="columns" :data-source="dataSource" :row-selection="rowSelection" />
+    <div>
+        <a-table :columns="columns" :data-source="dataSource" :row-selection="rowSelection" >
+            <template slot="operation" slot-scope="text, record">
+                <a-button @click="onEdit(record)">编辑</a-button>
+            </template>
+        </a-table>
+        <a-modal title="编辑" :visible="visible" @ok="handleOk" @cancel="handleCancel" width="800px">
+            <span>9089889</span>
+        </a-modal>
+        
+    </div>
+    
 </template>
 <script>
 const columns = [
@@ -20,6 +31,11 @@ const columns = [
     width: '30%',
     key: 'address',
   },
+  {
+    title: '操作',
+    dataIndex: 'operation',
+    scopedSlots:{ customRender: 'operation' }
+  }
 ]
 const dataSource = [
   {
@@ -75,16 +91,21 @@ const rowSelection = {
   },
 }
 
-
-
-
-
 export default {
     data(){
         return{
             dataSource,
             columns,
-            rowSelection
+            rowSelection,
+            visible: false,
+        }
+    },
+    methods:{
+        onEdit(record){
+            this.visible = true
+        },
+        handleCancel(){
+            this.visible = false
         }
     }
 }
