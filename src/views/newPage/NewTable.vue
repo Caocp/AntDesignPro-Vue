@@ -1,16 +1,47 @@
 <template>
+  <page-header-wrapper>
     <div>
-        <a-table :columns="columns" :data-source="dataSource" :row-selection="rowSelection" >
+        <a-table :columns="columns" :data-source="dataSource" :row-selection="rowSelection">
             <template slot="operation" slot-scope="text, record">
                 <a-button @click="onEdit(record)">编辑</a-button>
             </template>
         </a-table>
         <a-modal title="编辑" :visible="visible" @ok="handleOk" @cancel="handleCancel" width="800px">
-            <span>9089889</span>
+            <template>
+              <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }" @submit="handleSubmit">
+                <a-form-item label="姓名">
+                  <a-input
+                    v-decorator="['note', { rules: [{ required: true, message: '姓名不能为空' }] }]"
+                  />
+                </a-form-item>
+                <a-form-item label="姓别">
+                  <a-select
+                    v-decorator="[
+                      'gender',
+                      { rules: [{ required: true, message: '姓别不能为空' }] },
+                    ]"
+                    placeholder="请选择"
+                    @change="handleSelectChange"
+                  >
+                    <a-select-option value="1">
+                      男
+                    </a-select-option>
+                    <a-select-option value="2">
+                      女
+                    </a-select-option>
+                  </a-select>
+                </a-form-item>
+                <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+                  <a-button type="primary" html-type="submit">
+                    保存
+                  </a-button>
+                </a-form-item>
+              </a-form>
+            </template>
         </a-modal>
         
-    </div>
-    
+      </div>
+    </page-header-wrapper>
 </template>
 <script>
 const columns = [
@@ -98,17 +129,34 @@ export default {
             columns,
             rowSelection,
             visible: false,
+            formLayout: 'horizontal',
+            form: this.$form.createForm(this, { name: 'coordinated' }),
         }
     },
     methods:{
         onEdit(record){
+          console.log(record)
             this.visible = true
         },
         handleCancel(){
             this.visible = false
-        }
+        },
+        handleSubmit(e) {
+          e.preventDefault()
+          this.form.validateFields((err, values) => {
+            if (!err) {
+              console.log('Received values of form: ', values)
+            }
+          })
+        },
+        handleSelectChange(value) {
+          console.log(value)
+          this.form.setFieldsValue({
+            note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
+          })
+        },
     }
-}
+  }
 </script>
 <style scoped>
 
