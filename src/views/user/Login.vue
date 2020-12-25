@@ -40,6 +40,22 @@
               <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
             </a-input-password>
           </a-form-item>
+          <a-form-item>
+            <a-input
+              style="width:60%;float:left;"
+              size="large"
+              placeholder="请输入验证码"
+              v-decorator="[
+                'code',
+                {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}
+              ]"
+            >
+              <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+            </a-input>
+            <div style="float:right;">
+              <img :src='verificationCode' @click="getVerificationCode" />
+            </div>
+          </a-form-item>
         </a-tab-pane>
         <a-tab-pane key="tab2" tab="手机号登录">
           <a-form-item>
@@ -118,7 +134,7 @@ import md5 from 'md5'
 import TwoStepCaptcha from '@/components/tools/TwoStepCaptcha'
 import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
-import { getSmsCaptcha, get2step } from '@/api/login'
+import { getSmsCaptcha, get2step, getVerificationCode } from '@/api/login'
 
 export default {
   components: {
@@ -139,11 +155,13 @@ export default {
         loginBtn: false,
         // login type: 0 email, 1 username, 2 telephone
         loginType: 0,
-        smsSendBtn: false
+        smsSendBtn: false,
+        verificationCode:''
       }
     }
   },
   created () {
+    this.getVerificationCode()
     get2step({ })
       .then(res => {
         this.requiredTwoStepCaptcha = res.result.stepCode
@@ -166,6 +184,10 @@ export default {
       }
       callback()
     },
+    async getVerificationCode(){
+      const data = await getVerificationCode()
+      this.verificationCode = data.img
+    },
     handleTabClick (key) {
       this.customActiveKey = key
       // this.form.resetFields()
@@ -181,7 +203,7 @@ export default {
 
       state.loginBtn = true
 
-      const validateFieldsKey = customActiveKey === 'tab1' ? ['username', 'password'] : ['mobile', 'captcha']
+      const validateFieldsKey = customActiveKey === 'tab1' ? ['username', 'password','code'] : ['mobile', 'captcha']
 
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
         if (!err) {

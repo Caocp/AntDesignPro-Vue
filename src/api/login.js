@@ -10,7 +10,8 @@ const userApi = {
   SendSmsErr: '/account/sms_err',
   // get my info
   UserInfo: '/user/info',
-  UserMenu: '/user/nav'
+  UserMenu: '/user/nav',
+  getCode: 'http://eladmin.ccp520.com/auth/code'
 }
 
 /**
@@ -39,6 +40,16 @@ export function getSmsCaptcha (parameter) {
     data: parameter
   })
 }
+
+//获取验证码
+export function getVerificationCode () {
+  return request({
+    url: `${userApi.getCode}?v=${Math.random()}`,
+    method: 'get'
+  })
+}
+
+
 
 export function getInfo () {
   return request({

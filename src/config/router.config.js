@@ -172,6 +172,12 @@ export const asyncRouterMap = [
             component: () => import('@/views/newPage/NewBasic'),
             meta: { title: '新详情页', keepAlive: true, hiddenHeaderContent: false, permission: [ 'profile' ] }
           },
+          {
+            path: '/newPage/NewAdvanced',
+            name: 'NewAdvanced',
+            component: () => import('@/views/newPage/NewAdvanced'),
+            meta: { title: '新高级详情页', keepAlive: true, hiddenHeaderContent: false, permission: ['profile'] }
+          }
           
         ]
       },
