@@ -8,7 +8,7 @@ const constantRouterComponents = {
   // 基础页面 layout 必须引入
   BasicLayout: BasicLayout,
   BlankLayout: BlankLayout,
-  RouteView: RouteView,
+  Layout: RouteView,
   PageView: PageView,
   '403': () => import(/* webpackChunkName: "error" */ '@/views/exception/403'),
   '404': () => import(/* webpackChunkName: "error" */ '@/views/exception/404'),
@@ -21,24 +21,24 @@ const constantRouterComponents = {
   'Analysis': () => import('@/views/dashboard/Analysis'),
 
   // form
-  'BasicForm': () => import('@/views/form/BasicForm'),
-  'StepForm': () => import('@/views/form/stepForm/StepForm'),
-  'AdvanceForm': () => import('@/views/form/advancedForm/AdvancedForm'),
+  // 'BasicForm': () => import('@/views/form/BasicForm'),
+  // 'StepForm': () => import('@/views/form/stepForm/StepForm'),
+  // 'AdvanceForm': () => import('@/views/form/advancedForm/AdvancedForm'),
 
   // list
-  'TableList': () => import('@/views/list/TableList'),
-  'StandardList': () => import('@/views/list/StandardList'),
-  'CardList': () => import('@/views/list/CardList'),
-  'SearchLayout': () => import('@/views/list/search/SearchLayout'),
-  'SearchArticles': () => import('@/views/list/search/Article'),
-  'SearchProjects': () => import('@/views/list/search/Projects'),
-  'SearchApplications': () => import('@/views/list/search/Applications'),
-  'ProfileBasic': () => import('@/views/profile/basic/Index'),
-  'ProfileAdvanced': () => import('@/views/profile/advanced/Advanced'),
+  // 'TableList': () => import('@/views/list/TableList'),
+  // 'StandardList': () => import('@/views/list/StandardList'),
+  // 'CardList': () => import('@/views/list/CardList'),
+  // 'SearchLayout': () => import('@/views/list/search/SearchLayout'),
+  // 'SearchArticles': () => import('@/views/list/search/Article'),
+  // 'SearchProjects': () => import('@/views/list/search/Projects'),
+  // 'SearchApplications': () => import('@/views/list/search/Applications'),
+  // 'ProfileBasic': () => import('@/views/profile/basic/Index'),
+  // 'ProfileAdvanced': () => import('@/views/profile/advanced/Advanced'),
 
   // result
-  'ResultSuccess': () => import(/* webpackChunkName: "result" */ '@/views/result/Success'),
-  'ResultFail': () => import(/* webpackChunkName: "result" */ '@/views/result/Error'),
+  // 'ResultSuccess': () => import(/* webpackChunkName: "result" */ '@/views/result/Success'),
+  // 'ResultFail': () => import(/* webpackChunkName: "result" */ '@/views/result/Error'),
 
   // exception
   'Exception403': () => import(/* webpackChunkName: "fail" */ '@/views/exception/403'),
@@ -46,15 +46,15 @@ const constantRouterComponents = {
   'Exception500': () => import(/* webpackChunkName: "fail" */ '@/views/exception/500'),
 
   // account
-  'AccountCenter': () => import('@/views/account/center/Index'),
-  'AccountSettings': () => import('@/views/account/settings/Index'),
-  'BaseSettings': () => import('@/views/account/settings/BaseSetting'),
-  'SecuritySettings': () => import('@/views/account/settings/Security'),
-  'CustomSettings': () => import('@/views/account/settings/Custom'),
-  'BindingSettings': () => import('@/views/account/settings/Binding'),
-  'NotificationSettings': () => import('@/views/account/settings/Notification'),
+  // 'AccountCenter': () => import('@/views/account/center/Index'),
+  // 'AccountSettings': () => import('@/views/account/settings/Index'),
+  // 'BaseSettings': () => import('@/views/account/settings/BaseSetting'),
+  // 'SecuritySettings': () => import('@/views/account/settings/Security'),
+  // 'CustomSettings': () => import('@/views/account/settings/Custom'),
+  // 'BindingSettings': () => import('@/views/account/settings/Binding'),
+  // 'NotificationSettings': () => import('@/views/account/settings/Notification'),
 
-  'TestWork': () => import(/* webpackChunkName: "TestWork" */ '@/views/dashboard/TestWork')
+  // 'TestWork': () => import(/* webpackChunkName: "TestWork" */ '@/views/dashboard/TestWork')
 }
 
 // 前端未找到页面路由（固定不用改）
@@ -84,12 +84,27 @@ export const generatorDynamicRouter = (token) => {
   return new Promise((resolve, reject) => {
     loginService.getCurrentUserNav(token).then(res => {
       console.log('res', res)
-      const { result } = res
+      res.push({
+        children: [
+          {
+            component: "Workplace",
+            key: "workplace",
+            meta: {title: "工作台", show: true},
+            name: "workplace"
+          }
+        ],
+        component: "Layout",
+        key: "dashboard",
+        meta: {icon: "dashboard", title: "仪表盘", show: true},
+        name: "dashboard",
+        redirect: "/dashboard/workplace"
+      })
+      // const { result } = nav
       const menuNav = []
       const childrenNav = []
       //      后端数据, 根级树数组,  根级 PID
-      listToTree(result, childrenNav, 0)
-      rootRouter.children = childrenNav
+      // listToTree(nav, childrenNav, 0)
+      rootRouter.children = res
       menuNav.push(rootRouter)
       console.log('menuNav', menuNav)
       const routers = generator(menuNav)
@@ -117,6 +132,7 @@ export const generator = (routerMap, parent) => {
       path: item.path || `${parent && parent.path || ''}/${item.key}`,
       // 路由名称，建议唯一
       name: item.name || item.key || '',
+      key: item.name,
       // 该路由对应页面的 组件 :方案1
       // component: constantRouterComponents[item.component || item.key],
       // 该路由对应页面的 组件 :方案2 (动态加载)

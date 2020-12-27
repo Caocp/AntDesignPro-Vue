@@ -9,9 +9,9 @@ const userApi = {
   SendSms: '/account/sms',
   SendSmsErr: '/account/sms_err',
   // get my info
-  UserInfo: '/user/info',
-  UserMenu: '/user/nav',
-  getCode: 'http://eladmin.ccp520.com/auth/code'
+  UserInfo: '/auth/info',
+  UserMenu: '/api/menus/build',
+  getCode: '/auth/code'
 }
 
 /**

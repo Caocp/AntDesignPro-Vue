@@ -40,17 +40,22 @@ export default {
     }
   },
   computed: {
+    nickname () {
+      return this.$store.getters.userInfo.nickName
+    },
+
     wrpCls () {
       return {
         'ant-pro-global-header-index-right': true,
         [`ant-pro-global-header-index-${(this.isMobile || !this.topMenu) ? 'light' : this.theme}`]: true
       }
-    }
+    },
   },
+
   mounted () {
     setTimeout(() => {
       this.currentUser = {
-        name: 'Serati Ma'
+        name: this.nickname
       }
     }, 1500)
   }

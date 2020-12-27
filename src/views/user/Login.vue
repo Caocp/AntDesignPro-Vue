@@ -156,19 +156,20 @@ export default {
         // login type: 0 email, 1 username, 2 telephone
         loginType: 0,
         smsSendBtn: false,
-        verificationCode:''
-      }
+      },
+      verificationCode:'',
+      verificationCodeUUID: ''
     }
   },
   created () {
     this.getVerificationCode()
-    get2step({ })
-      .then(res => {
-        this.requiredTwoStepCaptcha = res.result.stepCode
-      })
-      .catch(() => {
-        this.requiredTwoStepCaptcha = false
-      })
+    // get2step({ })
+    //   .then(res => {
+    //     this.requiredTwoStepCaptcha = res.result.stepCode
+    //   })
+    //   .catch(() => {
+    //     this.requiredTwoStepCaptcha = false
+    //   })
     // this.requiredTwoStepCaptcha = true
   },
   methods: {
@@ -187,6 +188,7 @@ export default {
     async getVerificationCode(){
       const data = await getVerificationCode()
       this.verificationCode = data.img
+      this.verificationCodeUUID = data.uuid
     },
     handleTabClick (key) {
       this.customActiveKey = key
@@ -198,7 +200,8 @@ export default {
         form: { validateFields },
         state,
         customActiveKey,
-        Login
+        Login,
+        verificationCodeUUID
       } = this
 
       state.loginBtn = true
@@ -212,6 +215,8 @@ export default {
           delete loginParams.username
           loginParams[!state.loginType ? 'email' : 'username'] = values.username
           loginParams.password = md5(values.password)
+          loginParams.password = 'sdzW8dzDosR4/Ev2cMCsVf3BolNKM9mp4F2eWpXyLBEUkTRPy9MFpLHzQFY0EUpHFOGpLOQEpBZuzu5A6199iA=='
+          loginParams.uuid = verificationCodeUUID
           Login(loginParams)
             .then((res) => this.loginSuccess(res))
             .catch(err => this.requestFailed(err))
