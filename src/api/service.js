@@ -9,10 +9,18 @@ export function deptList(pid) {
 }
 
 export function deptTableList(page,deptId){
-    return request({
-        url:`/api/users?page=${page}&size=10&sort=id,Cdesc&deptId=${deptId}`,
-        method: 'get'
-    })
+    if(deptId){
+        return request({
+            url:`/api/users?page=${page}&size=10&sort=id,desc&deptId=${deptId}`,
+            method: 'get'
+        })
+    }else{
+        return request({
+            url:`/api/users?page=${page}&size=10&sort=id,desc`,
+            method: 'get'
+        })
+    }
+    
 }
 
 

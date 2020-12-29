@@ -50,7 +50,7 @@
                 <a-table
                     :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
                     :columns="columns"
-                    :data-source="data"
+                    :data-source="deptTableresult"
                 />
             </a-row>
         </a-col>
@@ -169,8 +169,13 @@ export default {
     async getDeptTableList(page,deptId){
         const { content } = await deptTableList(page,deptId);
         this.deptTableresult = content
+        console.log(this.deptTableresult)
 
-    }
+    },
+    onSelectChange(selectedRowKeys) {
+      console.log('selectedRowKeys changed: ', selectedRowKeys);
+      this.selectedRowKeys = selectedRowKeys;
+    },
   }
 }
 </script>
