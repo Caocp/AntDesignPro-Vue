@@ -29,16 +29,70 @@
       </a-row>
       <a-row>
         <a-col :span="4">
-          <a-tree :load-data="onLoadData" :tree-data="treeData" />
+          <a-tree :load-data="onLoadData" :tree-data="treeData" @select="onSelect" />
         </a-col>
-        <a-col :span="20"> </a-col>
+        <a-col :span="20"> 
+            <a-row>
+                <a-button icon="reset" type="primary" style="margin-left: 2%;">
+                    新增
+                </a-button>
+                <!-- <a-button icon="reset" type="primary" style="margin-left: 2%;">
+                    修改
+                </a-button>
+                <a-button icon="reset" type="primary" style="margin-left: 2%;">
+                    删除
+                </a-button> -->
+                <a-button icon="reset" type="primary" style="margin-left: 2%;">
+                    导出
+                </a-button>
+            </a-row>
+            <a-row>
+                <a-table
+                    :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
+                    :columns="columns"
+                    :data-source="data"
+                />
+            </a-row>
+        </a-col>
       </a-row>
     </div>
   </div>
 </template>
 
 <script>
-import { deptList } from '../../../api/service'
+import { deptList, deptTableList } from '../../../api/service'
+const columns = [
+    {
+        title:'用户名',
+        dataIndex:'username'
+    },
+    {
+        title:'昵称',
+        dataIndex:'nickName'
+    },
+    {
+        title:'性别',
+        dataIndex:'gender'
+    },
+    {
+        title:'电话',
+        dataIndex:'phone'
+    },
+    {
+        title:'邮箱',
+        dataIndex:'email'
+    },
+    {
+        title:'部门',
+        dataIndex:'id'
+    },
+    {
+        title:'操作',
+        dataIndex:'id'
+    },
+]
+
+
 export default {
   data() {
     return {
@@ -46,11 +100,18 @@ export default {
       searchValue: '',
       autoExpandParent: true,
       treeData: [],
-      pid: ''
+      pid: '',
+      columns,
+      selectedRowKeys: [],
+      deptTableresult: [],
+      loading: false,
+      page: '0',
+      deptId:''
     }
   },
   created() {
     this.getDeptList(this.pid)
+    this.getDeptTableList(this.page,this.deptId)
   },
   methods: {
     onChange(date, dateString) {
@@ -65,9 +126,10 @@ export default {
       this.expandedKeys = expandedKeys
       this.autoExpandParent = false
     },
-    changeTree(selectedKeys) {
-      this.pid = selectedKeys
-      this.getDeptList(selectedKeys.id)
+   onSelect(selectedKeys, info) {
+      console.log(selectedKeys);
+      console.log(info);
+
     },
 
     onLoadData(treeNode) {
@@ -94,7 +156,7 @@ export default {
     async getDeptList(pid) {
       const { content } = await deptList(pid)
       let customColumns = []
-      content.map((item, index) => {
+      content.map(item => {
         var obj = {
           title: item.name,
           key: item.id,
@@ -103,6 +165,11 @@ export default {
         customColumns.push(obj)
       })
       this.treeData = customColumns
+    },
+    async getDeptTableList(page,deptId){
+        const { content } = await deptTableList(page,deptId);
+        this.deptTableresult = content
+
     }
   }
 }

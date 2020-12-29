@@ -8,4 +8,11 @@ export function deptList(pid) {
     })
 }
 
+export function deptTableList(page,deptId){
+    return request({
+        url:`/api/users?page=${page}&size=10&sort=id,Cdesc&deptId=${deptId}`,
+        method: 'get'
+    })
+}
+
 
