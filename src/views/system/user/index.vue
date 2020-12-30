@@ -32,16 +32,10 @@
           <a-tree :load-data="onLoadData" :tree-data="treeData" @select="onSelect" />
         </a-col>
         <a-col :span="20"> 
-            <a-row>
-                <a-button icon="reset" type="primary" style="margin-left: 2%;">
+            <a-row style="margin: 2% 0px;">
+                <a-button icon="reset" type="primary" @click="showModal('', true, 'add')">
                     新增
                 </a-button>
-                <!-- <a-button icon="reset" type="primary" style="margin-left: 2%;">
-                    修改
-                </a-button>
-                <a-button icon="reset" type="primary" style="margin-left: 2%;">
-                    删除
-                </a-button> -->
                 <a-button icon="reset" type="primary" style="margin-left: 2%;">
                     导出
                 </a-button>
@@ -51,7 +45,16 @@
                     :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
                     :columns="columns"
                     :data-source="deptTableresult"
-                />
+                    :loading="loading"  
+                    :locale="{'emptyText':'暂无数据'}"
+                 
+                >
+                    
+                    <template slot="operation" slot-scope="text, record">
+                        <a-button type="primary" @click="showModal(text, true, 'edit')">编辑</a-button>
+                    </template>
+                </a-table>
+                <edit-user :visible="showEitModal" :type='type'></edit-user>
             </a-row>
         </a-col>
       </a-row>
@@ -61,6 +64,7 @@
 
 <script>
 import { deptList, deptTableList } from '../../../api/service'
+import EditUser from '../user/editUser'
 const columns = [
     {
         title:'用户名',
@@ -84,16 +88,20 @@ const columns = [
     },
     {
         title:'部门',
-        dataIndex:'id'
+        dataIndex:'dept.name'
     },
     {
         title:'操作',
-        dataIndex:'id'
+        dataIndex:'id',
+        scopedSlots: { customRender: 'operation' },
     },
 ]
 
 
 export default {
+    components: {
+        EditUser
+    },
   data() {
     return {
       expandedKeys: [],
@@ -106,7 +114,10 @@ export default {
       deptTableresult: [],
       loading: false,
       page: '0',
-      deptId:''
+      deptId:'',
+      loading: false,
+      showEitModal: false,
+      type:'add'
     }
   },
   created() {
@@ -127,8 +138,10 @@ export default {
       this.autoExpandParent = false
     },
    onSelect(selectedKeys, info) {
-      console.log(selectedKeys);
-      console.log(info);
+      this.deptId = selectedKeys[0]
+      this.loading = true
+      this.getDeptTableList(this.page,this.deptId)
+      this.loading = false
 
     },
 
@@ -176,6 +189,13 @@ export default {
       console.log('selectedRowKeys changed: ', selectedRowKeys);
       this.selectedRowKeys = selectedRowKeys;
     },
+    // handleTableChange(pagination, filters, sorter, { currentDataSource }){
+    //     console.log(pagination)
+    // },
+    showModal(id,showModal,type){
+        this.showEitModal = showModal,
+        this.type = type
+    }
   }
 }
 </script>

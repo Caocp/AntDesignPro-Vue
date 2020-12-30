@@ -23,4 +23,17 @@ export function deptTableList(page,deptId){
     
 }
 
+export function jobList(){
+    return request({
+        url: '/api/job?page=0&size=9999&enabled=true',
+        method: 'get'
+    })
+}
+
+export function roleList(){
+    return request({
+        url: '/api/roles/all',
+        method: 'get'
+    })
+}
 
