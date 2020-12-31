@@ -45,7 +45,8 @@ import {
   Descriptions,
   message,
   notification,
-  Tree
+  Tree,
+  TreeSelect
 } from 'ant-design-vue'
 import Viser from 'viser-vue'
 
@@ -114,5 +115,6 @@ Vue.use(PageLoading)
 Vue.use(PermissionHelper)
 Vue.use(VueCropper)
 Vue.use(Tree)
+Vue.use(TreeSelect)
 
 process.env.NODE_ENV !== 'production' && console.warn('[antd-pro] NOTICE: Antd use lazy-load.')
