@@ -6,7 +6,13 @@
                     v-decorator="[
                         'username',
                         {
-                            rules: [{ required: true, message: '请输入用户名' }],
+                            rules: [
+                            { required: true, message: '请输入用户名' },
+                            {
+                                pattern: /^[0-9a-zA-Z]+$/,
+                                message:'用户名不可输入中文'
+                            }
+                            ],
                             initialValue:type === 'edit' ? info.username : ''
                             }
                     ]"
@@ -17,7 +23,13 @@
                     v-decorator="[
                         'phone',
                         {
-                            rules: [{ required: true, message: '请输入电话' }],
+                            rules: [
+                            { required: true, message: '请输入电话' },
+                            {
+                                pattern:/^1[3456789]\d{9}$/,
+                                message:'电话格式输入不合法'
+                            }
+                            ],
                             initialValue:type === 'edit' ? info.phone : ''
                             }
                     ]"
@@ -39,7 +51,14 @@
                     v-decorator="[
                         'email',
                         {
-                            rules: [{ required: true, message: '请输入邮箱' }],
+                            rules: [
+                            { required: true, message: '请输入邮箱' },
+                            {
+                                pattern: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((.[a-zA-Z0-9_-]{2,3}){1,2})$/,
+                                message:'邮箱格式不合法'
+                                
+                            }
+                            ],
                             initialValue:type === 'edit' ? info.email : ''
                             }
                     ]"
@@ -48,7 +67,6 @@
             <a-form-item label="部门">
                 <a-tree-select
                     v-model="jobValue"
-                    v-decorator="[ 'jobValue', { initialValue:type === 'edit'?jobValue:'' } ]"
                     tree-data-simple-mode
                     style="width: 100%"
                     :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
@@ -72,7 +90,7 @@
                     </a-select-option>
                 </a-select>
             </a-form-item>
-            <a-form-item label="性别">
+            <a-form-item label="性别"> 
                 <a-radio-group :default-value="1" v-decorator="['gender',{initialValue:type === 'edit'?gender:''}]">
                     <a-radio :value="1">男</a-radio>
                     <a-radio :value="2">女</a-radio>
@@ -102,7 +120,7 @@
    
 </template>
 <script>
-import { jobList, roleList, deptList } from '../../../api/service'
+import { jobList, roleList, deptList, addUser } from '../../../api/service'
 export default {
     props:['visible','type','info'],
     data(){
@@ -117,6 +135,7 @@ export default {
             dept:{},
             deptId:'',
             form: this.$form.createForm(this, { name: 'dynamic_rule' }),
+            id:null
         }
     },
     watch:{
@@ -131,11 +150,25 @@ export default {
         roleListOptions() {
             return this.roleListData.filter(o => !this.roles.includes(o));
         },
+        
     },
     created(){
         this.getJobList() 
         this.getRoleList()
         this.getDeptList(this.pid)
+        console.log(this.info)
+        if(this.type == 'edit'){
+            this.jobValue = this.info.dept.name
+            this.deptId = this.info.dept.id
+            for(var i = 0; i < this.info.jobs.length; i++){
+                this.jobs.push(this.info.jobs[i].id)
+            }
+             for(var i = 0; i < this.info.roles.length; i++){
+                this.roles.push(this.info.roles[i].id)
+            }
+            
+        }
+        
     },
     methods:{
         async getJobList(){ //获取岗位列表
@@ -154,10 +187,12 @@ export default {
         },
         handleDeptChange(value, label, extra){
             this.jobValue = extra.triggerNode.dataRef.title
+            
             this.deptId = extra.triggerNode.dataRef.pId
             this.dept = {
                 id:this.deptId
             }
+            console.log(this.dept)
         },
         async getDeptList(pid) {
             const { content } = await deptList(pid)
@@ -203,32 +238,79 @@ export default {
                 this.form.resetFields()
                 this.$emit('cancel')
             },
+            
+                formatDate (value) {
+                    let date = new Date(value);
+                    let y = date.getFullYear();
+                    let MM = date.getMonth() + 1;
+                    MM = MM < 10 ? ('0' + MM) : MM;
+                    let d = date.getDate();
+                    d = d < 10 ? ('0' + d) : d;
+                    let h = date.getHours();
+                    h = h < 10 ? ('0' + h) : h;
+                    let m = date.getMinutes();
+                    m = m < 10 ? ('0' + m) : m;
+                    let s = date.getSeconds();
+                    s = s < 10 ? ('0' + s) : s;
+                    return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
+                },
+            
             onOk(){
-                alert(88)
                     this.form.validateFields(async(err, values) => {
                     console.log(values) 
-                    // values.isSupplier = '2'
-                    // values.roleArray = values.roleArray.join(",") //将数组拼接成字符串传递过去
-                    // if (!err) {
-                    //     let data = {}
-                    //     if(this.type === 'add'){
-                    //         values.front = 'front4'
-                    //         data = await addBusinessUser(values)
-                            
-                    //     } else {
-                    //         values.enterpriseId = this.enterpriseId
-                    //         data = await editBusinessUser(values)
-                    //     }
-                    //     const { data:{success, msg} } = data
-                    //     this.$notification[success ? 'success' : 'error']({
-                    //         message: '提示',
-                    //         description: msg,
-                    //     });
-                    //     if(success){
-                    //         this.form.resetFields()
-                    //         this.$emit('cancel')
-                    //     }
-                    // }
+                    let jobArr = []
+                    let jobObj = {}
+                    for(var i = 0; i < values.jobs.length; i++){
+                        jobObj = {
+                            id: values.jobs[i]
+                        }
+                        jobArr.push(jobObj)
+                    }
+                    values.jobs = jobArr
+                    
+                    let roleArr = []
+                    let roleObj = {}
+                    for(var i = 0; i < values.roles.length; i++){
+                        roleObj = {
+                            id: values.roles[i]
+                        }
+                        roleArr.push(roleObj)
+                    }
+                    values.roles = roleArr
+                    if(values.gender == 2){
+                        values.gender = '女'
+                    }else{
+                        values.gender = '男'
+                    }
+                    if(values.enabled == true){
+                        values.enabled = 'true'
+                    }else{
+                        values.enabled = 'false'
+                    }
+                    if (!err) {
+                        let data = {}
+                        if(this.type === 'add'){
+                            values.id = this.id
+                            values.dept = {id:this.deptId}
+                        } else {
+                            values.id = this.info.id
+                            values.createBy = this.info.createBy
+                            values.createTime = this.formatDate(this.info.createTime)
+                            values.updateTime = this.formatDate(this.info.updateTime)
+                            values.updatedBy = this.info.updatedBy
+                            values.dept = {id:this.deptId,name:this.jobValue}
+                        }
+                        data = await addUser(values)
+                        const { data:{success, msg} } = data
+                        this.$notification[success ? 'success' : 'error']({
+                            message: '提示',
+                            description: msg,
+                        });
+                        if(success){
+                            this.form.resetFields()
+                            this.$emit('cancel')
+                        }
+                    }
                 });
             }
 

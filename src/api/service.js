@@ -17,10 +17,27 @@ export function deptTableList(page,deptId,blurry,createTime,enabled){
     createTime = createTime == undefined ? '' : createTime
     enabled = enabled == undefined ? '' : enabled
     deptId = deptId == undefined ? '' : deptId
-
+    page = page == undefined ? '' : page
     return request({
         url:`/api/users?page=${page}&size=10&sort=id,desc&deptId=${deptId}&blurry=${blurry}&createTime=${createTime}&enabled=${enabled}`,
         method: 'get'
+    })
+}
+
+
+export function usersDownload(page){
+    return request({
+        url:`/api/users/download?page=${page}&size=10&sort=id,desc`,
+        method: 'get'
+
+    })
+}
+export function deleteDeptTableList(parems){
+    return request({
+        url:'/api/users',
+        method: 'DELETE',
+        data:parems
+        
     })
 }
 
@@ -35,6 +52,14 @@ export function roleList(){
     return request({
         url: '/api/roles/all',
         method: 'get'
+    })
+}
+
+export function addUser(parsams){
+    return request({
+        url: 'api/users',
+        method: 'post',
+        data: parsams
     })
 }
 

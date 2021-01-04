@@ -36,7 +36,7 @@
                 <a-button icon="reset" type="primary" @click="showModal('', true, 'add','')">
                     新增
                 </a-button>
-                <a-button icon="reset" type="primary" style="margin-left: 2%;">
+                <a-button icon="reset" type="primary" style="margin-left: 2%;" @click="Download">
                     导出
                 </a-button>
             </a-row>
@@ -49,12 +49,25 @@
                     :locale="{'emptyText':'暂无数据'}"
                  
                 >
-                    
+                    <template slot="status" slot-scope="text, record">
+                      <p>{{record.enabled==='true'?"禁用":"激活"}}</p>
+                    </template>
                     <template slot="operation" slot-scope="text, record">
                         <a-button type="primary" @click="showModal(text, true, 'edit',record)">编辑</a-button>
+                        <!-- <a-button type="primary" @click="deletaModal(record)">删除</a-button> -->
+                        <a-popconfirm
+                          title="确定删除本条数据吗？"
+                          ok-text="确定"
+                          cancel-text="取消"
+                          @confirm="confirm(record)"
+                          @cancel="cancel"
+                        >
+                          <a-button type="primary">删除</a-button>
+                        </a-popconfirm>
                     </template>
+                    
                 </a-table>
-                <edit-user :visible="showEitModal" :info='record' :type='type' @cancel='onCancel'></edit-user>
+                <edit-user v-if='showEitModal' :visible="showEitModal" :info='record' :type='type' @cancel='onCancel'></edit-user>
             </a-row>
         </a-col>
       </a-row>
@@ -63,7 +76,7 @@
 </template>
 
 <script>
-import { deptList, deptTableList } from '../../../api/service'
+import { deptList, deptTableList, deleteDeptTableList, usersDownload } from '../../../api/service'
 import EditUser from '../user/editUser'
 const columns = [
     {
@@ -89,6 +102,15 @@ const columns = [
     {
         title:'部门',
         dataIndex:'dept.name'
+    },
+    {
+        title:'状态',
+        dataIndex:'enabled',
+        scopedSlots: { customRender: 'enabled' },
+    },
+    {
+        title:'创建日期',
+        dataIndex:'createTime'
     },
     {
         title:'操作',
@@ -210,12 +232,32 @@ export default {
     showModal(id,showModal,type,record){ //新增、编辑弹窗
         this.showEitModal = showModal,
         this.type = type
+        console.log(id,showModal,type,record)
         if(type === 'edit'){
             this.record = record
         }
     },
     onCancel(){ //取消按钮
         this.showEitModal = false
+    },
+    confirm(e) {//删除
+      console.log(e);
+      let deleteId = []
+      deleteId.push(e.id)
+      console.log(deleteId)
+      const result = deleteDeptTableList(deleteId)
+        this.$message.success('删除成功!');
+        this.getDeptTableList(this.page,this.deptId,this.blurry,this.createTime,this.enabled) 
+    },
+    cancel(e) {
+      console.log(e);
+    },
+    
+    async usersDownload(page){ //导出
+        const data = await usersDownload(this.page);
+    },
+    Download(){
+      this.usersDownload(this.page)
     }
   }
 }
