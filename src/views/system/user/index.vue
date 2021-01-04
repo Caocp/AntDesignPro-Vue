@@ -158,8 +158,7 @@ export default {
     },
     handleChange(value) { //状态选择
       console.log(value)
-      this.enabled = value
-      this.getDeptTableList(this.page,this.deptId,this.blurry,this.createTime,this.enabled)
+      this.getDeptTableList(this.page,this.deptId,this.blurry,this.createTime,value)
     },
     searchButton(){//搜索
         this.getDeptTableList(this.page,this.deptId,this.blurry,this.createTime,this.enabled)
@@ -226,13 +225,11 @@ export default {
 
     },
     onSelectChange(selectedRowKeys) {
-      console.log('selectedRowKeys changed: ', selectedRowKeys);
       this.selectedRowKeys = selectedRowKeys;
     },
     showModal(id,showModal,type,record){ //新增、编辑弹窗
         this.showEitModal = showModal,
         this.type = type
-        console.log(id,showModal,type,record)
         if(type === 'edit'){
             this.record = record
         }
@@ -244,7 +241,6 @@ export default {
       console.log(e);
       let deleteId = []
       deleteId.push(e.id)
-      console.log(deleteId)
       const result = deleteDeptTableList(deleteId)
         this.$message.success('删除成功!');
         this.getDeptTableList(this.page,this.deptId,this.blurry,this.createTime,this.enabled) 
