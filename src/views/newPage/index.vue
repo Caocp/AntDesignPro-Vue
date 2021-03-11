@@ -5,6 +5,7 @@
       :multiple="true"
       action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
       :headers="headers"
+      :beforeUpload="beforeUpload"
       accept=".pdf"
       @change="handleChange"
     >
@@ -34,9 +35,9 @@ export default {
                 this.$message.error(`${info.file.name} file upload failed.`)
             }
         },
-    beforeUpload (file) {
-        console.log('file', file)
-    }
+        beforeUpload (file) {
+            console.log('file', file)
+        }
     }
 }
 </script>
