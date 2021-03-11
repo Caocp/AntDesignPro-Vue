@@ -267,8 +267,23 @@ export const asyncRouterMap = [
             ]
           }
         ]
+      },
+      // newPage
+      {
+        path: '/newPage',
+        name: 'newPage',
+        component: RouteView,
+        redirect: '/newPage/index',
+        meta: { title: 'newPage', icon: 'table', permission: ['table'] },
+        children: [
+          {
+            path: '/newPage/card',
+            name: 'index',
+            component: () => import('@/views/newPage/index'),
+            meta: { title: 'index', keepAlive: true, permission: ['table'] }
+          }
+        ]
       }
-
       // other
       /*
       {
