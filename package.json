@@ -16,7 +16,7 @@
     "element-ui": "^1.2.8",
     "font-awesome": "^4.7.0",
     "mock": "^0.1.1",
-    "node-sass": "^5.0.0",
+    "node-sass": "^7.0.0",
     "nprogress": "^0.2.0",
     "vue": "^2.2.2",
     "vue-avatar": "^2.1.8",
